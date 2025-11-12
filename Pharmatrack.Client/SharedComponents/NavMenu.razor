@@ -1,5 +1,4 @@
-@inject AppStateService AppState
-@implements IDisposable
+@inherits UiComponentBase
 
 <div class="nav-menu">
     <nav class="nav-menu-list">
@@ -77,18 +76,6 @@
         </div>
     </nav>
 </div>
-
-@code {
-    protected override void OnInitialized()
-    {
-        AppState.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        AppState.OnChange -= StateHasChanged;
-    }
-}
 
 <style>
     .nav-menu {

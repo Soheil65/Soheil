@@ -1,7 +1,6 @@
+@inherits UiComponentBase
 @using Pharmatrack.Client.Models
 @using Pharmatrack.Client.Services
-@inject ChatService ChatService
-@inject IJSRuntime JSRuntime
 
 @if (!string.IsNullOrEmpty(SelectedUserId) && selectedConversation != null)
 {
@@ -61,96 +60,4 @@ else
         </svg>
         <p>Select a conversation to start messaging</p>
     </div>
-}
-
-@code {
-    [Parameter]
-    public string? SelectedUserId { get; set; }
-
-    [Parameter]
-    public string? MessageIdToHighlight { get; set; }
-
-    [Parameter]
-    public EventCallback OnMessageSent { get; set; }
-
-    private Conversation? selectedConversation;
-    private List<ChatMessage> messages = new();
-    private ElementReference messagesContainer;
-    private string? highlightedMessageId;
-
-    protected override void OnParametersSet()
-    {
-        if (!string.IsNullOrEmpty(SelectedUserId))
-        {
-            LoadConversation();
-            LoadMessages();
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!string.IsNullOrEmpty(MessageIdToHighlight) && messages.Any(m => m.Id == MessageIdToHighlight))
-        {
-            await ScrollToMessage(MessageIdToHighlight);
-        }
-    }
-
-    private void LoadConversation()
-    {
-        selectedConversation = ChatService.GetConversations()
-            .FirstOrDefault(c => c.UserId == SelectedUserId);
-    }
-
-    private void LoadMessages()
-    {
-        messages = ChatService.GetMessages(SelectedUserId!).ToList();
-    }
-
-    public async Task ScrollToMessage(string messageId)
-    {
-        try
-        {
-            highlightedMessageId = messageId;
-            StateHasChanged();
-
-            await Task.Delay(100); // Allow render to complete
-            await JSRuntime.InvokeVoidAsync("scrollToId", $"msg-{messageId}");
-
-            // Remove highlight after 2 seconds
-            await Task.Delay(2000);
-            highlightedMessageId = null;
-            StateHasChanged();
-        }
-        catch (Exception)
-        {
-            // Handle JS interop errors silently
-        }
-    }
-
-    private async Task HandleSendMessage(string text)
-    {
-        if (!string.IsNullOrEmpty(SelectedUserId))
-        {
-            var message = ChatService.SendMessage(SelectedUserId, text);
-            messages.Add(message);
-            await OnMessageSent.InvokeAsync();
-            StateHasChanged();
-        }
-    }
-
-    private string GetRelativeTime(DateTime timestamp)
-    {
-        var diff = DateTime.UtcNow - timestamp;
-
-        if (diff.TotalMinutes < 1)
-            return "just now";
-        if (diff.TotalMinutes < 60)
-            return $"{(int)diff.TotalMinutes} min ago";
-        if (diff.TotalHours < 24)
-            return $"{(int)diff.TotalHours}h ago";
-        if (diff.TotalDays < 7)
-            return $"{(int)diff.TotalDays}d ago";
-        
-        return timestamp.ToLocalTime().ToString("MMM d");
-    }
 }

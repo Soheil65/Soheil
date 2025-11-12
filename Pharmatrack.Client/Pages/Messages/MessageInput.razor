@@ -1,3 +1,5 @@
+@inherits UiComponentBase
+
 <div class="message-input-container">
     <textarea @bind="messageText"
               @bind:event="oninput"
@@ -23,27 +25,3 @@
         </svg>
     </button>
 </div>
-
-@code {
-    [Parameter]
-    public EventCallback<string> OnSendMessage { get; set; }
-
-    private string messageText = string.Empty;
-
-    private async Task SendMessage()
-    {
-        if (!string.IsNullOrWhiteSpace(messageText))
-        {
-            await OnSendMessage.InvokeAsync(messageText);
-            messageText = string.Empty;
-        }
-    }
-
-    private async Task HandleKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter" && !e.ShiftKey)
-        {
-            await SendMessage();
-        }
-    }
-}

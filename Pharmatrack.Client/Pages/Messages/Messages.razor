@@ -1,9 +1,8 @@
 @page "/messages"
+@inherits UiComponentBase
 @using Pharmatrack.Client.Models
 @using Microsoft.AspNetCore.WebUtilities
 @using Pharmatrack.Client.Services
-@inject ChatService ChatService
-@inject NavigationManager Navigation
 
 <div class="messages-page">
     <ConversationsList 
@@ -14,56 +13,5 @@
     <ChatWindow 
         SelectedUserId="@selectedUserId"
         MessageIdToHighlight="@messageIdToHighlight"
-        OnMessageSent="@HandleMessageSent" />
+        OnMessageSent="@HandleMessageSent"  />
 </div>
-
-@code {
-    private IEnumerable<Conversation>? conversations;
-    private string? selectedUserId;
-    private string? messageIdToHighlight;
-
-    protected override void OnInitialized()
-    {
-        LoadConversations();
-        ParseQueryParameters();
-        
-        // Select first conversation by default if no query params
-        if (string.IsNullOrEmpty(selectedUserId) && conversations?.Any() == true)
-        {
-            selectedUserId = conversations.First().UserId;
-        }
-    }
-
-    private void ParseQueryParameters()
-    {
-        var uri = new Uri(Navigation.Uri);
-        var queryParams = QueryHelpers.ParseQuery(uri.Query);
-
-        if (queryParams.TryGetValue("userId", out var userIdValues))
-        {
-            selectedUserId = userIdValues.FirstOrDefault();
-        }
-
-        if (queryParams.TryGetValue("messageId", out var messageIdValues))
-        {
-            messageIdToHighlight = messageIdValues.FirstOrDefault();
-        }
-    }
-
-    private void LoadConversations()
-    {
-        conversations = ChatService.GetConversations();
-    }
-
-    private void HandleConversationSelect(string userId)
-    {
-        selectedUserId = userId;
-    }
-
-    private void HandleMessageSent()
-    {
-        // Refresh conversations to update last message preview
-        LoadConversations();
-        StateHasChanged();
-    }
-}

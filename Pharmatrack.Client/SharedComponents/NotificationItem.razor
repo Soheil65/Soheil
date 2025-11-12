@@ -1,6 +1,5 @@
+@inherits UiComponentBase
 @using Pharmatrack.Client.Models
-@inject NavigationManager Navigation
-@inject NotificationsService NotificationsService
 
 <div class="notification-item" @onclick="HandleClick">
     <img src="@Notification.AvatarUrl" alt="@Notification.FromUserName" class="avatar" />
@@ -12,39 +11,3 @@
     </div>
     <div class="timestamp">@GetRelativeTime(Notification.Timestamp)</div>
 </div>
-
-@code {
-    [Parameter]
-    public NotificationModel Notification { get; set; } = null!;
-
-    [Parameter]
-    public EventCallback OnNavigate { get; set; }
-
-    private async Task HandleClick()
-    {
-        // Mark notification as read
-        NotificationsService.MarkAsRead(Notification.Id);
-
-        // Navigate to messages with deep-link
-        Navigation.NavigateTo($"/messages?userId={Notification.FromUserId}&messageId={Notification.MessageId}");
-
-        // Notify parent to close the panel
-        await OnNavigate.InvokeAsync();
-    }
-
-    private string GetRelativeTime(DateTime timestamp)
-    {
-        var diff = DateTime.UtcNow - timestamp;
-
-        if (diff.TotalMinutes < 1)
-            return "just now";
-        if (diff.TotalMinutes < 60)
-            return $"{(int)diff.TotalMinutes} min ago";
-        if (diff.TotalHours < 24)
-            return $"{(int)diff.TotalHours}h ago";
-        if (diff.TotalDays < 7)
-            return $"{(int)diff.TotalDays}d ago";
-        
-        return timestamp.ToLocalTime().ToString("MMM d");
-    }
-}

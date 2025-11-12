@@ -1,8 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Pharmatrack.Client.Services
 @using Pharmatrack.Client.SharedComponents
-@inject AppStateService AppState
-@implements IDisposable
 
 <div class="app-container">
     <Header />
@@ -19,15 +17,3 @@
     
     <Footer />
 </div>
-
-@code {
-    protected override void OnInitialized()
-    {
-        AppState.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        AppState.OnChange -= StateHasChanged;
-    }
-}

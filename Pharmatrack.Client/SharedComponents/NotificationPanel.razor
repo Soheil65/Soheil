@@ -1,6 +1,5 @@
+@inherits UiComponentBase
 @using Pharmatrack.Client.Models
-@inject NavigationManager Navigation
-@implements IDisposable
 
 @if (IsOpen)
 {
@@ -58,46 +57,4 @@
             </button>
         </div>
     </div>
-}
-
-@code {
-    [Parameter]
-    public bool IsOpen { get; set; }
-
-    [Parameter]
-    public IEnumerable<NotificationModel>? Notifications { get; set; }
-
-    [Parameter]
-    public EventCallback OnClose { get; set; }
-
-    private ElementReference panelElement;
-
-    protected override void OnInitialized()
-    {
-        Navigation.LocationChanged += HandleLocationChanged;
-    }
-
-    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        if (IsOpen)
-        {
-            _ = Close();
-        }
-    }
-
-    private async Task Close()
-    {
-        await OnClose.InvokeAsync();
-    }
-
-    private async Task ViewAllNotifications()
-    {
-        Navigation.NavigateTo("/messages");
-        await Close();
-    }
-
-    public void Dispose()
-    {
-        Navigation.LocationChanged -= HandleLocationChanged;
-    }
 }

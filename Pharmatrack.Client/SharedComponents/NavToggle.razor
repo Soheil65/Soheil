@@ -1,4 +1,4 @@
-@inject AppStateService AppState
+@inherits UiComponentBase
 
 <button @onclick="ToggleSidebar"
         class="nav-toggle-btn"
@@ -15,10 +15,3 @@
               d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
 </button>
-
-@code {
-    private void ToggleSidebar()
-    {
-        AppState.ToggleSidebar();
-    }
-}

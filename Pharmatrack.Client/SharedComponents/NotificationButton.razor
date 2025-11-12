@@ -1,5 +1,4 @@
-@inject NotificationsService NotificationsService
-@implements IDisposable
+@inherits UiComponentBase
 
 <div class="notification-container">
     <button @onclick="TogglePanel"
@@ -29,38 +28,3 @@
         Notifications="@notifications"
         OnClose="@ClosePanel" />
 </div>
-
-@code {
-    private bool isPanelOpen = false;
-    private IEnumerable<NotificationModel>? notifications;
-
-    protected override void OnInitialized()
-    {
-        NotificationsService.OnChange += StateHasChanged;
-        LoadNotifications();
-    }
-
-    private void LoadNotifications()
-    {
-        notifications = NotificationsService.GetRecent(10);
-    }
-
-    private void TogglePanel()
-    {
-        isPanelOpen = !isPanelOpen;
-        if (isPanelOpen)
-        {
-            LoadNotifications();
-        }
-    }
-
-    private void ClosePanel()
-    {
-        isPanelOpen = false;
-    }
-
-    public void Dispose()
-    {
-        NotificationsService.OnChange -= StateHasChanged;
-    }
-}
