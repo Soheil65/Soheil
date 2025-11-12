@@ -1,5 +1,45 @@
-<header class="bg-primary text-white p-3">
-    <div class="container-fluid">
-        <h1 class="h3 mb-0">Pharmatrack - Pharmacy Management System</h1>
+<header class="app-header">
+    <div class="header-container">
+        <!-- Left section: Navigation toggle -->
+        <div class="header-left">
+            <NavToggle />
+        </div>
+
+        <!-- Center section: Search placeholder -->
+        <div class="header-center">
+            <div class="search-placeholder">
+                <!-- Optional: Add search component here later -->
+            </div>
+        </div>
+
+        <!-- Right section: Notifications and User menu -->
+        <div class="header-right">
+            <NotificationButton HasUnread="true" />
+            <UserMenu UserName="Soheil" 
+                      AvatarUrl="images/user-avatar.svg"
+                      OnEditProfile="@HandleEditProfile"
+                      OnAccountSettings="@HandleAccountSettings"
+                      OnSignOut="@HandleSignOut" />
+        </div>
     </div>
 </header>
+
+@code {
+    private void HandleEditProfile()
+    {
+        // TODO: Navigate to edit profile page
+        Console.WriteLine("Edit profile clicked");
+    }
+
+    private void HandleAccountSettings()
+    {
+        // TODO: Navigate to account settings page
+        Console.WriteLine("Account settings clicked");
+    }
+
+    private void HandleSignOut()
+    {
+        // TODO: Implement sign out logic
+        Console.WriteLine("Sign out clicked");
+    }
+}

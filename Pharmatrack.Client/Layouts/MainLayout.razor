@@ -1,18 +1,32 @@
 ﻿@inherits LayoutComponentBase
 @using Pharmatrack.Client.SharedComponents
+@inject AppStateService AppState
+@implements IDisposable
 
-<div class="d-flex flex-column min-vh-100">
+<div class="app-container">
     <Header />
     
-    <div class="d-flex flex-grow-1">
-        <div class="sidebar bg-light" style="width: 250px;">
+    <div class="app-body">
+        <div class="sidebar @(AppState.IsSidebarCollapsed ? "sidebar-collapsed" : "sidebar-expanded")">
             <NavMenu />
         </div>
         
-        <main class="flex-grow-1 p-4">
+        <main class="main-content">
             @Body
         </main>
     </div>
     
     <Footer />
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

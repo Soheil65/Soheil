@@ -15,6 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient
 
 // Register application services
 builder.Services.AddScoped<ApiClientService>();
-builder.Services.AddSingleton<AppStateService>();
+builder.Services.AddScoped<AppStateService>();
 
 await builder.Build().RunAsync();
