@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+@using Pharmatrack.Client.SharedComponents
+
+<div class="d-flex flex-column min-vh-100">
+    <Header />
+    
+    <div class="d-flex flex-grow-1">
+        <div class="sidebar bg-light" style="width: 250px;">
+            <NavMenu />
+        </div>
+        
+        <main class="flex-grow-1 p-4">
+            @Body
+        </main>
+    </div>
+    
+    <Footer />
+</div>
