@@ -16,5 +16,7 @@ builder.Services.AddScoped(sp => new HttpClient
 // Register application services
 builder.Services.AddScoped<ApiClientService>();
 builder.Services.AddScoped<AppStateService>();
+builder.Services.AddScoped<NotificationsService>();
+builder.Services.AddScoped<ChatService>();
 
 await builder.Build().RunAsync();

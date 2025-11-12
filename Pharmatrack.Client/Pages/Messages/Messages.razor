@@ -1,0 +1,47 @@
+@page "/messages"
+@using Pharmatrack.Client.Models
+@inject ChatService ChatService
+
+<div class="messages-page">
+    <ConversationsList 
+        Conversations="@conversations"
+        SelectedUserId="@selectedUserId"
+        OnSelect="@HandleConversationSelect" />
+
+    <ChatWindow 
+        SelectedUserId="@selectedUserId"
+        OnMessageSent="@HandleMessageSent" />
+</div>
+
+@code {
+    private IEnumerable<Conversation>? conversations;
+    private string? selectedUserId;
+
+    protected override void OnInitialized()
+    {
+        LoadConversations();
+        
+        // Select first conversation by default
+        if (conversations?.Any() == true)
+        {
+            selectedUserId = conversations.First().UserId;
+        }
+    }
+
+    private void LoadConversations()
+    {
+        conversations = ChatService.GetConversations();
+    }
+
+    private void HandleConversationSelect(string userId)
+    {
+        selectedUserId = userId;
+    }
+
+    private void HandleMessageSent()
+    {
+        // Refresh conversations to update last message preview
+        LoadConversations();
+        StateHasChanged();
+    }
+}

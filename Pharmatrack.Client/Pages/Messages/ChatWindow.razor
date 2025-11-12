@@ -1,0 +1,120 @@
+@using Pharmatrack.Client.Models
+@inject ChatService ChatService
+
+@if (!string.IsNullOrEmpty(SelectedUserId) && selectedConversation != null)
+{
+    <div class="chat-window">
+        <div class="chat-header">
+            <img src="@selectedConversation.AvatarUrl" 
+                 alt="@selectedConversation.UserName" 
+                 class="avatar" />
+            <div class="user-info">
+                <h3 class="user-name">@selectedConversation.UserName</h3>
+            </div>
+        </div>
+
+        <div class="messages-area" @ref="messagesContainer">
+            @if (messages.Any())
+            {
+                @foreach (var message in messages)
+                {
+                    <div class="message @(message.IsMine ? "mine" : "theirs")">
+                        @if (!message.IsMine)
+                        {
+                            <img src="@selectedConversation.AvatarUrl" 
+                                 alt="@selectedConversation.UserName" 
+                                 class="message-avatar" />
+                        }
+                        <div class="message-bubble">
+                            <p class="message-text">@message.Text</p>
+                            <span class="message-time">@GetRelativeTime(message.SentAt)</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p>No messages yet. Start the conversation!</p>
+                </div>
+            }
+        </div>
+
+        <MessageInput OnSendMessage="@HandleSendMessage" />
+    </div>
+}
+else
+{
+    <div class="no-selection">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke-width="1.5" 
+             stroke="currentColor" 
+             class="icon">
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+        </svg>
+        <p>Select a conversation to start messaging</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? SelectedUserId { get; set; }
+
+    [Parameter]
+    public EventCallback OnMessageSent { get; set; }
+
+    private Conversation? selectedConversation;
+    private List<ChatMessage> messages = new();
+    private ElementReference messagesContainer;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(SelectedUserId))
+        {
+            LoadConversation();
+            LoadMessages();
+        }
+    }
+
+    private void LoadConversation()
+    {
+        selectedConversation = ChatService.GetConversations()
+            .FirstOrDefault(c => c.UserId == SelectedUserId);
+    }
+
+    private void LoadMessages()
+    {
+        messages = ChatService.GetMessages(SelectedUserId!).ToList();
+    }
+
+    private async Task HandleSendMessage(string text)
+    {
+        if (!string.IsNullOrEmpty(SelectedUserId))
+        {
+            var message = ChatService.SendMessage(SelectedUserId, text);
+            messages.Add(message);
+            await OnMessageSent.InvokeAsync();
+            StateHasChanged();
+        }
+    }
+
+    private string GetRelativeTime(DateTime timestamp)
+    {
+        var diff = DateTime.UtcNow - timestamp;
+
+        if (diff.TotalMinutes < 1)
+            return "just now";
+        if (diff.TotalMinutes < 60)
+            return $"{(int)diff.TotalMinutes} min ago";
+        if (diff.TotalHours < 24)
+            return $"{(int)diff.TotalHours}h ago";
+        if (diff.TotalDays < 7)
+            return $"{(int)diff.TotalDays}d ago";
+        
+        return timestamp.ToLocalTime().ToString("MMM d");
+    }
+}

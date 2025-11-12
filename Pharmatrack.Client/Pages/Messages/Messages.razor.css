@@ -1,0 +1,25 @@
+.messages-page {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    height: calc(100vh - 4rem);
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .messages-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: 40% 60%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .messages-page {
+        grid-template-columns: 16rem 1fr;
+    }
+}
+
+@media (min-width: 1280px) {
+    .messages-page {
+        grid-template-columns: 22rem 1fr;
+    }
+}

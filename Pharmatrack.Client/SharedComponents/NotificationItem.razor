@@ -1,0 +1,42 @@
+@using Pharmatrack.Client.Models
+
+<div class="notification-item">
+    <img src="@AvatarUrl" alt="@Name" class="avatar" />
+    <div class="content">
+        <div class="header">
+            <span class="name">@Name</span>
+        </div>
+        <div class="preview">@MessagePreview</div>
+    </div>
+    <div class="timestamp">@GetRelativeTime(Timestamp)</div>
+</div>
+
+@code {
+    [Parameter]
+    public string AvatarUrl { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Name { get; set; } = string.Empty;
+
+    [Parameter]
+    public string MessagePreview { get; set; } = string.Empty;
+
+    [Parameter]
+    public DateTime Timestamp { get; set; }
+
+    private string GetRelativeTime(DateTime timestamp)
+    {
+        var diff = DateTime.UtcNow - timestamp;
+
+        if (diff.TotalMinutes < 1)
+            return "just now";
+        if (diff.TotalMinutes < 60)
+            return $"{(int)diff.TotalMinutes} min ago";
+        if (diff.TotalHours < 24)
+            return $"{(int)diff.TotalHours}h ago";
+        if (diff.TotalDays < 7)
+            return $"{(int)diff.TotalDays}d ago";
+        
+        return timestamp.ToLocalTime().ToString("MMM d");
+    }
+}

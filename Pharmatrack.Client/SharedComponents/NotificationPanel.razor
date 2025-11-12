@@ -1,0 +1,104 @@
+@using Pharmatrack.Client.Models
+@inject NavigationManager Navigation
+@implements IDisposable
+
+@if (IsOpen)
+{
+    <div class="backdrop" @onclick="Close"></div>
+    
+    <div class="panel" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-labelledby="notification-title"
+         @ref="panelElement">
+        <div class="header">
+            <h2 id="notification-title" class="title">Notifications</h2>
+            <button @onclick="Close" 
+                    class="close-btn" 
+                    aria-label="Close"
+                    type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     fill="none" 
+                     viewBox="0 0 24 24" 
+                     stroke-width="2" 
+                     stroke="currentColor" 
+                     class="icon">
+                    <path stroke-linecap="round" 
+                          stroke-linejoin="round" 
+                          d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="notifications-list" role="list">
+            @if (Notifications != null && Notifications.Any())
+            {
+                @foreach (var notification in Notifications)
+                {
+                    <div role="listitem">
+                        <NotificationItem 
+                            AvatarUrl="@notification.AvatarUrl"
+                            Name="@notification.Name"
+                            MessagePreview="@notification.MessagePreview"
+                            Timestamp="@notification.Timestamp" />
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p>No notifications</p>
+                </div>
+            }
+        </div>
+
+        <div class="footer">
+            <button @onclick="ViewAllNotifications" 
+                    class="view-all-btn"
+                    type="button">
+                View All Notifications
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    [Parameter]
+    public IEnumerable<NotificationModel>? Notifications { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private ElementReference panelElement;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && IsOpen)
+        {
+            // Focus management would be handled via JS interop in production
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        // Listen for Escape key via JS interop would be added here
+    }
+
+    private async Task Close()
+    {
+        await OnClose.InvokeAsync();
+    }
+
+    private void ViewAllNotifications()
+    {
+        Navigation.NavigateTo("/messages");
+    }
+
+    public void Dispose()
+    {
+        // Cleanup JS interop listeners
+    }
+}
