@@ -1,0 +1,29 @@
+@inherits Microsoft.AspNetCore.Components.Web.ErrorBoundary
+
+@if (CurrentException is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <p>An unexpected error occurred. Please try again later.</p>
+        @if (IsDebugMode)
+        {
+            <hr>
+            <p class="mb-0"><small>@CurrentException.Message</small></p>
+        }
+        <button class="btn btn-danger mt-2" @onclick="RecoverError">Reload</button>
+    </div>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public bool IsDebugMode { get; set; }
+
+    private void RecoverError()
+    {
+        Recover();
+    }
+}
