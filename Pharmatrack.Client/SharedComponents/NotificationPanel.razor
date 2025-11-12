@@ -37,10 +37,8 @@
                 {
                     <div role="listitem">
                         <NotificationItem 
-                            AvatarUrl="@notification.AvatarUrl"
-                            Name="@notification.Name"
-                            MessagePreview="@notification.MessagePreview"
-                            Timestamp="@notification.Timestamp" />
+                            Notification="@notification"
+                            OnNavigate="@Close" />
                     </div>
                 }
             }
@@ -74,17 +72,17 @@
 
     private ElementReference panelElement;
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender && IsOpen)
-        {
-            // Focus management would be handled via JS interop in production
-        }
-    }
-
     protected override void OnInitialized()
     {
-        // Listen for Escape key via JS interop would be added here
+        Navigation.LocationChanged += HandleLocationChanged;
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (IsOpen)
+        {
+            _ = Close();
+        }
     }
 
     private async Task Close()
@@ -92,13 +90,14 @@
         await OnClose.InvokeAsync();
     }
 
-    private void ViewAllNotifications()
+    private async Task ViewAllNotifications()
     {
         Navigation.NavigateTo("/messages");
+        await Close();
     }
 
     public void Dispose()
     {
-        // Cleanup JS interop listeners
+        Navigation.LocationChanged -= HandleLocationChanged;
     }
 }

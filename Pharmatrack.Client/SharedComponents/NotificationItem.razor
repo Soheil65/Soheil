@@ -1,28 +1,36 @@
 @using Pharmatrack.Client.Models
+@inject NavigationManager Navigation
+@inject NotificationsService NotificationsService
 
-<div class="notification-item">
-    <img src="@AvatarUrl" alt="@Name" class="avatar" />
+<div class="notification-item" @onclick="HandleClick">
+    <img src="@Notification.AvatarUrl" alt="@Notification.FromUserName" class="avatar" />
     <div class="content">
         <div class="header">
-            <span class="name">@Name</span>
+            <span class="name">@Notification.FromUserName</span>
         </div>
-        <div class="preview">@MessagePreview</div>
+        <div class="preview">@Notification.MessagePreview</div>
     </div>
-    <div class="timestamp">@GetRelativeTime(Timestamp)</div>
+    <div class="timestamp">@GetRelativeTime(Notification.Timestamp)</div>
 </div>
 
 @code {
     [Parameter]
-    public string AvatarUrl { get; set; } = string.Empty;
+    public NotificationModel Notification { get; set; } = null!;
 
     [Parameter]
-    public string Name { get; set; } = string.Empty;
+    public EventCallback OnNavigate { get; set; }
 
-    [Parameter]
-    public string MessagePreview { get; set; } = string.Empty;
+    private async Task HandleClick()
+    {
+        // Mark notification as read
+        NotificationsService.MarkAsRead(Notification.Id);
 
-    [Parameter]
-    public DateTime Timestamp { get; set; }
+        // Navigate to messages with deep-link
+        Navigation.NavigateTo($"/messages?userId={Notification.FromUserId}&messageId={Notification.MessageId}");
+
+        // Notify parent to close the panel
+        await OnNavigate.InvokeAsync();
+    }
 
     private string GetRelativeTime(DateTime timestamp)
     {

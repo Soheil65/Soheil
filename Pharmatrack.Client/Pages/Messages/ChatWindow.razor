@@ -1,5 +1,7 @@
 @using Pharmatrack.Client.Models
+@using Pharmatrack.Client.Services
 @inject ChatService ChatService
+@inject IJSRuntime JSRuntime
 
 @if (!string.IsNullOrEmpty(SelectedUserId) && selectedConversation != null)
 {
@@ -18,7 +20,8 @@
             {
                 @foreach (var message in messages)
                 {
-                    <div class="message @(message.IsMine ? "mine" : "theirs")">
+                    <div id="msg-@message.Id" 
+                         class="message @(message.IsMine ? "mine" : "theirs") @(highlightedMessageId == message.Id ? "highlight" : "")">
                         @if (!message.IsMine)
                         {
                             <img src="@selectedConversation.AvatarUrl" 
@@ -65,11 +68,15 @@ else
     public string? SelectedUserId { get; set; }
 
     [Parameter]
+    public string? MessageIdToHighlight { get; set; }
+
+    [Parameter]
     public EventCallback OnMessageSent { get; set; }
 
     private Conversation? selectedConversation;
     private List<ChatMessage> messages = new();
     private ElementReference messagesContainer;
+    private string? highlightedMessageId;
 
     protected override void OnParametersSet()
     {
@@ -77,6 +84,14 @@ else
         {
             LoadConversation();
             LoadMessages();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!string.IsNullOrEmpty(MessageIdToHighlight) && messages.Any(m => m.Id == MessageIdToHighlight))
+        {
+            await ScrollToMessage(MessageIdToHighlight);
         }
     }
 
@@ -89,6 +104,27 @@ else
     private void LoadMessages()
     {
         messages = ChatService.GetMessages(SelectedUserId!).ToList();
+    }
+
+    public async Task ScrollToMessage(string messageId)
+    {
+        try
+        {
+            highlightedMessageId = messageId;
+            StateHasChanged();
+
+            await Task.Delay(100); // Allow render to complete
+            await JSRuntime.InvokeVoidAsync("scrollToId", $"msg-{messageId}");
+
+            // Remove highlight after 2 seconds
+            await Task.Delay(2000);
+            highlightedMessageId = null;
+            StateHasChanged();
+        }
+        catch (Exception)
+        {
+            // Handle JS interop errors silently
+        }
     }
 
     private async Task HandleSendMessage(string text)

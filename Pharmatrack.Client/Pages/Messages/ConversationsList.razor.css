@@ -26,8 +26,8 @@
 
 .conversation-item {
     display: flex;
-    align-items: flex-start;
-    gap: 0.875rem;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.875rem 1.5rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -44,8 +44,8 @@
 }
 
 .avatar {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 9999px;
     object-fit: cover;
     flex-shrink: 0;
@@ -70,6 +70,7 @@
     font-weight: 600;
     font-size: 0.9375rem;
     color: #111827;
+    line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -80,6 +81,7 @@
     color: #9ca3af;
     white-space: nowrap;
     flex-shrink: 0;
+    line-height: 1;
 }
 
 .bottom-row {
@@ -91,7 +93,7 @@
 
 .preview {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #667085;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

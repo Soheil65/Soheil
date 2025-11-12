@@ -131,6 +131,21 @@
     font-size: 0.875rem;
 }
 
+.message.highlight {
+    outline: 2px solid #93c5fd;
+    border-radius: 1rem;
+    animation: fade 2s ease-out forwards;
+}
+
+@keyframes fade {
+    0% {
+        background-color: #eff6ff;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
 @media (max-width: 768px) {
     .message {
         max-width: 85%;
