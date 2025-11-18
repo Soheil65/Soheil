@@ -3,10 +3,10 @@ namespace Pharmatrack.Client.ServerConnector.Helpers;
 public static class ApiRoutes
 {
     public const string BaseUrl = "api";
-    
-    public static class Products
+
+    public static class Trips
     {
-        public const string Base = $"{BaseUrl}/products";
+        public const string Base = $"{BaseUrl}/trips";
         public const string GetAll = Base;
         public const string GetById = $"{Base}/{{0}}";
         public const string Create = Base;

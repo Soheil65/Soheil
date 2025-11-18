@@ -14,6 +14,11 @@ builder.Services.AddScoped(sp => new HttpClient
 });
 
 // Register application services
+builder.Services.AddDevExpressBlazor(options =>
+{
+    options.SizeMode = DevExpress.Blazor.SizeMode.Medium;
+});
+builder.Services.AddScoped<DxThemesService>();
 builder.Services.AddScoped<ApiClientService>();
 builder.Services.AddScoped<AppStateService>();
 builder.Services.AddScoped<NotificationsService>();

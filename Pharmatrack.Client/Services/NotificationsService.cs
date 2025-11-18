@@ -55,17 +55,17 @@ public class NotificationsService
                 Timestamp = DateTime.UtcNow.AddHours(-4),
                 IsRead = true
             },
-            new NotificationModel
-            {
-                Id = "5",
-                FromUserId = "user5",
-                FromUserName = "Linda Brown",
-                AvatarUrl = "images/avatars/user5.svg",
-                MessagePreview = "approved your medication order request",
-                MessageId = "m14",
-                Timestamp = DateTime.UtcNow.AddDays(-1),
-                IsRead = true
-            }
+                new NotificationModel
+                {
+                    Id = "5",
+                    FromUserId = "user5",
+                    FromUserName = "Linda Brown",
+                    AvatarUrl = "images/avatars/user5.svg",
+                    MessagePreview = "approved your trip request",
+                    MessageId = "m14",
+                    Timestamp = DateTime.UtcNow.AddDays(-1),
+                    IsRead = true
+                }
         };
     }
 

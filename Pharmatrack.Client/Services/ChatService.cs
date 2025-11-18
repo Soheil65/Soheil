@@ -54,7 +54,7 @@ public class ChatService
                 UserId = "user5",
                 UserName = "Linda Brown",
                 AvatarUrl = "images/avatars/user5.svg",
-                LastMessagePreview = "Order has been approved",
+                LastMessagePreview = "Trip has been approved",
                 LastTimestamp = DateTime.UtcNow.AddDays(-1),
                 UnreadCount = 0
             }
@@ -199,7 +199,7 @@ public class ChatService
                     Id = "m14",
                     FromUserId = "user5",
                     ToUserId = CurrentUserId,
-                    Text = "Order has been approved",
+                    Text = "Trip has been approved",
                     SentAt = DateTime.UtcNow.AddDays(-1),
                     IsMine = false
                 }

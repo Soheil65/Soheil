@@ -1,0 +1,59 @@
+﻿@inherits UiComponentBase
+@using DevExpress.Blazor
+
+<div class="card bg-light @Class">
+    <div class="card-body p-2">
+        <DxFormLayout CaptionPosition="CaptionPosition.Vertical" CssClass="w-100">
+            <DxFormLayoutItem Caption="View As:" ColSpanLg="1" ColSpanMd="12">
+                <DxToolbar>
+                    <Items>
+                        <DxToolbarItem GroupName="showing" IconCssClass="oi oi-list" Tooltip="Menu" />
+                        <DxToolbarItem GroupName="showing" IconCssClass="oi oi-grid-three-up" Tooltip="List" />
+                    </Items>
+                </DxToolbar>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Date:" ColSpanLg="3" ColSpanMd="12">
+                <DxDateRangePicker @bind-StartDate="@DateTimeStart"
+                                   @bind-EndDate="@DateTimeEnd" NullText="Select a date range..."
+                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" InputId="deOvervieww" CssClass="cw-320">
+                </DxDateRangePicker>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Statuses" ColSpanLg="2" ColSpanMd="12">
+                <DxDropDownButton RenderStyle="ButtonRenderStyle.Secondary"
+                                  Text="Select ..."
+                                  CssClass="me-1"
+                                  CloseDropDownOnItemClick="false"
+                                  IconCssClass="menu-icon-user-profile menu-icon">
+                    <DropDownContentTemplate>
+                        <div style="width:250px">
+                            <DxListBox Data="@Data"
+                                       TextFieldName="@nameof(Item.Name)"
+                                       SelectionMode="ListBoxSelectionMode.Multiple"
+                                       ShowCheckboxes="true"
+                                       ShowSelectAllCheckbox="true"
+                                       CssClass="w-auto mt-1 me-1 flex-grow-1 chi-220"
+                                       style="flex-basis: 240px"
+                                       @bind-Values="@Values" />
+                        </div>
+                    </DropDownContentTemplate>
+                </DxDropDownButton>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem ColSpanLg="2" ColSpanMd="6">
+                <DxButton RenderStyle="ButtonRenderStyle.Info"
+                          IconCssClass="oi oi-zoom-in"
+                          Text="Search" />
+                <DxButton RenderStyle="ButtonRenderStyle.Info"
+                          IconCssClass="oi oi-loop-circular"
+                          Text="Reset" />
+            </DxFormLayoutItem>
+
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="6">
+                <div class="d-flex justify-content-end">
+                    <DxButton RenderStyle="ButtonRenderStyle.Success"
+                              IconCssClass="oi oi-cloud-download"
+                              Text="Export" />
+                </div>
+            </DxFormLayoutItem>
+        </DxFormLayout>
+    </div>
+</div>

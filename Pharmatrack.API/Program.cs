@@ -17,7 +17,7 @@ builder.Services.AddOpenApi();
 
 // Register application services
 builder.Services.AddSingleton<ApplicationDbContext>();
-builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<TripService>();
 
 // Configure CORS to allow Blazor client
 builder.Services.AddCors(options =>

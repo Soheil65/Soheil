@@ -1,7 +1,9 @@
 namespace Pharmatrack.API.Models;
 
+[System.Obsolete("DbProduct is deprecated. Use DbTrip instead.")]
 public class DbProduct
 {
+    // Kept as a compatibility shim during the refactor. Prefer using DbTrip.
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }

@@ -6,11 +6,11 @@ namespace Pharmatrack.Client.Services;
 public class ApiClientService
 {
     private readonly ApiConnector _apiConnector;
-    public ProductEndpoint Products { get; }
+    public TripEndpoint Trip { get; }
 
     public ApiClientService(HttpClient httpClient)
     {
         _apiConnector = new ApiConnector(httpClient);
-        Products = new ProductEndpoint(_apiConnector);
+        Trip = new TripEndpoint(_apiConnector);
     }
 }

@@ -1,4 +1,12 @@
+@using DevExpress.Blazor
 @using Pharmatrack.Client.Layouts
+
+<!-- App.razor -->
+<HeadContent>
+    @* register the default theme (replace with the theme you want initially) *@
+    @DxResourceManager.RegisterTheme(Pharmatrack.Client.Services.DxThemes.Bootstrap)
+</HeadContent>
+
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">

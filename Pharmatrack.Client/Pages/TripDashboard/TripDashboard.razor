@@ -1,0 +1,12 @@
+@page "/TripDashboard"
+@inherits UiComponentBase
+@using DevExpress.Blazor
+@using DevExpress.Blazor.PivotTable
+@using Pharmatrack.Client.Services
+
+<PageTitle>Trips</PageTitle>
+
+<div class="container">
+    <TripDashboardFilterPannel Class="mb-2" />
+    <TripDashboardDataTable  />
+</div>
