@@ -14,14 +14,14 @@ public class TripService
         _context = context;
     }
 
-    public BaseResponse<List<TripViewModel>> GetAllTrips()
+    public BaseResponse<List<TripResponseViewModel>> GetAllTrips()
     {
         try
         {
             var products = _context.GetTrips();
             var viewModels = products.Select(p => MapToViewModel(p)).ToList();
 
-            return new BaseResponse<List<TripViewModel>>
+            return new BaseResponse<List<TripResponseViewModel>>
             {
                 Success = true,
                 Data = viewModels,
@@ -30,7 +30,7 @@ public class TripService
         }
         catch (Exception ex)
         {
-            return new BaseResponse<List<TripViewModel>>
+            return new BaseResponse<List<TripResponseViewModel>>
             {
                 Success = false,
                 Message = "Failed to retrieve trips",
@@ -39,21 +39,60 @@ public class TripService
         }
     }
 
-    public BaseResponse<TripViewModel> GetTripById(int id)
+
+    public BaseResponse<List<TripResponseViewModel>> GetByFilters(TripFilterRequestViewModel tripFilterRequestViewModel)
+    {
+        try
+        {
+            var trips = _context.GetTrips();
+
+            var filtered = trips.Where(t =>
+                t.DispatchTime >= tripFilterRequestViewModel.StartDate &&
+                t.DispatchTime <= tripFilterRequestViewModel.EndDate &&
+                tripFilterRequestViewModel.Statuses.Contains(t.Status));
+
+            int skip = (tripFilterRequestViewModel.PageNumber - 1) * tripFilterRequestViewModel.PageSize;
+
+            var pagedTrips = filtered
+                .Skip(skip)
+                .Take(tripFilterRequestViewModel.PageSize)
+                .ToList();
+
+            var viewModels = pagedTrips.Select(MapToViewModel).ToList();
+
+            return new BaseResponse<List<TripResponseViewModel>>
+            {
+                Success = true,
+                Data = viewModels,
+                Message = "Trips retrieved successfully"
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<List<TripResponseViewModel>>
+            {
+                Success = false,
+                Message = "Failed to retrieve trips",
+                Errors = new List<string> { ex.Message }
+            };
+        }
+    }
+
+    public BaseResponse<TripResponseViewModel> GetTripById(int id)
     {
         try
         {
             var product = _context.GetTripById(id);
             if (product == null)
             {
-                return new BaseResponse<TripViewModel>
+                return new BaseResponse<TripResponseViewModel>
                 {
                     Success = false,
                     Message = "Trip not found"
                 };
             }
 
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = true,
                 Data = MapToViewModel(product),
@@ -62,7 +101,7 @@ public class TripService
         }
         catch (Exception ex)
         {
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = false,
                 Message = "Failed to retrieve trip",
@@ -71,7 +110,7 @@ public class TripService
         }
     }
 
-    public BaseResponse<TripViewModel> CreateTrip(TripRequest request)
+    public BaseResponse<TripResponseViewModel> CreateTrip(TripRequest request)
     {
         try
         {
@@ -88,7 +127,7 @@ public class TripService
 
             var created = _context.AddTrip(dbTrip);
 
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = true,
                 Data = MapToViewModel(created),
@@ -97,7 +136,7 @@ public class TripService
         }
         catch (Exception ex)
         {
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = false,
                 Message = "Failed to create trip",
@@ -106,7 +145,7 @@ public class TripService
         }
     }
 
-    public BaseResponse<TripViewModel> UpdateTrip(int id, TripRequest request)
+    public BaseResponse<TripResponseViewModel> UpdateTrip(int id, TripRequest request)
     {
         try
         {
@@ -124,14 +163,14 @@ public class TripService
             var updated = _context.UpdateTrip(id, dbTrip);
             if (updated == null)
             {
-                return new BaseResponse<TripViewModel>
+                return new BaseResponse<TripResponseViewModel>
                 {
                     Success = false,
                     Message = "Trip not found"
                 };
             }
 
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = true,
                 Data = MapToViewModel(updated),
@@ -140,7 +179,7 @@ public class TripService
         }
         catch (Exception ex)
         {
-            return new BaseResponse<TripViewModel>
+            return new BaseResponse<TripResponseViewModel>
             {
                 Success = false,
                 Message = "Failed to update trip",
@@ -181,14 +220,14 @@ public class TripService
         }
     }
 
-    private static TripViewModel MapToViewModel(DbTrip product)
+    private static TripResponseViewModel MapToViewModel(DbTrip product)
     {
-        return new TripViewModel
+        return new TripResponseViewModel
         {
             Id = product.Id,
             TripNumber = product.TripNumber,
             Status = product.Status,
-            ServiceType = product.ServiceType??string.Empty,
+            ServiceType = product.ServiceType ?? string.Empty,
             Description = product.Description ?? string.Empty,
             DispatchTime = product.DispatchTime,
             Dispatcher = product.Dispatcher ?? string.Empty,

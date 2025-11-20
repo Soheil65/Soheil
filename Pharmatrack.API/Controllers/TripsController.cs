@@ -27,6 +27,16 @@ public class TripsController : ControllerBase
         return Ok(response);
     }
 
+
+    [HttpPost("GetByFilters")]
+    public IActionResult GetByFilters([FromBody] TripFilterRequestViewModel tripFilterRequestViewModel)
+    {
+        var response = _tripService.GetByFilters(tripFilterRequestViewModel);
+        if (!response.Success)
+            return BadRequest(response);
+        return Ok(response);
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {

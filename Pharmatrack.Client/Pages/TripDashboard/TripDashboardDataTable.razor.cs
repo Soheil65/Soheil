@@ -13,12 +13,12 @@ public partial class TripDashboardDataTable : UiComponentBase
     public string Class { get; set; } = string.Empty;
 
     [Parameter]
-    public IEnumerable<TripViewModel>? Trips { get; set; } = null;
+    public IEnumerable<TripResponseViewModel>? Trips { get; set; } = null;
 
     [Parameter]
-    public EventCallback<TripViewModel?> OnTripSelected { get; set; }
+    public EventCallback<TripResponseViewModel?> OnTripSelected { get; set; }
 
-    public TripViewModel? SelectedTrip { get; set; }
+    public TripResponseViewModel? SelectedTrip { get; set; }
 
     // Paging state
     int PageIndex { get; set; } = 0;  // zero-based
@@ -73,7 +73,7 @@ public partial class TripDashboardDataTable : UiComponentBase
         await LoadPageAsync();
     }
 
-    private void ShowMap(TripViewModel trip)
+    private void ShowMap(TripResponseViewModel trip)
     {
         // Demo coordinates (3 stops)
         MapStops = new List<(double, double)>
@@ -85,7 +85,7 @@ public partial class TripDashboardDataTable : UiComponentBase
         IsMapPopupVisible = true;
     }
 
-    private void SelectTrip(TripViewModel trip)
+    private void SelectTrip(TripResponseViewModel trip)
     {
         SelectedTrip = trip;
         _ = OnTripSelected.InvokeAsync(trip);

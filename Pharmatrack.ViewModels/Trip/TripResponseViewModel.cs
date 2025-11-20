@@ -9,7 +9,7 @@ public enum TripStatus
     Cancelled
 }
 
-public class TripViewModel
+public class TripResponseViewModel
 {
     public int Id { get; set; }
     public string TripNumber { get; set; } = string.Empty;

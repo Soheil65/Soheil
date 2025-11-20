@@ -8,6 +8,7 @@ public static class ApiRoutes
     {
         public const string Base = $"{BaseUrl}/trips";
         public const string GetAll = Base;
+        public const string GetByFilters = $"{Base}/GetByFilters";
         public const string GetById = $"{Base}/{{0}}";
         public const string Create = Base;
         public const string Update = $"{Base}/{{0}}";

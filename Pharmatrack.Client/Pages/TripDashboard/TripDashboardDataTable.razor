@@ -17,10 +17,10 @@
             CssClass="@Class">
 
         <Columns>
-            <DxGridDataColumn Caption="Status" MinWidth="100" FieldName="@nameof(TripViewModel.Status)">
+            <DxGridDataColumn Caption="Status" MinWidth="100" FieldName="@nameof(TripResponseViewModel.Status)">
                 <CellDisplayTemplate>
                     @{
-                        var employeeTask = (TripViewModel)context.DataItem;
+                        var employeeTask = (TripResponseViewModel)context.DataItem;
                         var displayText = employeeTask.Status;
                         var badgeClass = employeeTask.Status switch
                         {
@@ -35,28 +35,28 @@
                 </CellDisplayTemplate>
             </DxGridDataColumn>
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.ServiceType)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.ServiceType)"
                               Caption="Service Types" />
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.TripNumber)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.TripNumber)"
                               Caption="Trip Number" />
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.Description)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Description)"
                               Caption="Description" />
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.DispatchTime)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.DispatchTime)"
                               Caption="Dispatch Time" />
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.Dispatcher)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Dispatcher)"
                               Caption="Dispatcher" />
 
-            <DxGridDataColumn FieldName="@nameof(TripViewModel.Driver)"
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Driver)"
                               Caption="Driver" />
 
             <DxGridDataColumn Caption="Map">
                 <CellDisplayTemplate>
                     <DxButton RenderStyle="ButtonRenderStyle.Secondary"
-                              Click="@(()=>ShowMap((TripViewModel)context.DataItem))"
+                              Click="@(()=>ShowMap((TripResponseViewModel)context.DataItem))"
                               Text="Show Trip Route" />
                 </CellDisplayTemplate>
             </DxGridDataColumn>
