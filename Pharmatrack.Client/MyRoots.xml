@@ -1,0 +1,23 @@
+﻿<linker>
+	<assembly fullname="DevExpress.Data.v25.1">
+		<type fullname="DevExpress.Data.Helpers.crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.ExpressiveGroupHelpers/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.ExpressiveSortHelpers/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.GenericDelegateHelper/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.GenericEnumerableHelper/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.SummaryValueExpressiveCalculator/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.TreeListNodeComparerBase/crtp_*" />
+		<type fullname="DevExpress.Data.Helpers.UnboundSourceCore/UnboundSourcePropertyDescriptor/crtp_*" />
+		<type fullname="DevExpress.Data.ListSourceDataController" />
+		<type fullname="DevExpress.Data.VisibleListSourceRowCollection/crtp_*" />
+		<type fullname="DevExpress.Internal.WeakEventHandler`3">
+			<method name="CreateDelegate" />
+		</type>
+		<type fullname="DevExpress.Utils.Filtering.Internal.EndUserFilteringMetricViewModel" />
+		<!-- Also add the following lines to enable trimming in JavaScript-Based reports -->
+		<type fullname="DevExpress.XtraReports.Web.ReportDesigner.*" />
+		<type fullname="DevExpress.XtraReports.Web.WebDocumentViewer.*" />
+		<type fullname="DevExpress.AspNetCore.Reporting.ReportDesigner.Native.DataContracts.*" />
+		<type fullname="DevExpress.AspNetCore.Reporting.WebDocumentViewer.Native.DataContracts.*" />
+	</assembly>
+</linker>

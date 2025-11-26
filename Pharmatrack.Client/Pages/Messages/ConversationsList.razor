@@ -1,0 +1,43 @@
+@inherits UiComponentBase
+@using Pharmatrack.Client.Models
+
+<div class="conversations-list">
+    <div class="header">
+        <h2 class="title">Messages</h2>
+    </div>
+
+    <div class="list" role="list">
+        @if (Conversations != null && Conversations.Any())
+        {
+            @foreach (var conversation in Conversations)
+            {
+                <div role="listitem" 
+                     class="conversation-item @(conversation.UserId == SelectedUserId ? "active" : "")"
+                     @onclick="() => HandleSelect(conversation.UserId)">
+                    <img src="@conversation.AvatarUrl" 
+                         alt="@conversation.UserName" 
+                         class="avatar" />
+                    <div class="content">
+                        <div class="top-row">
+                            <span class="user-name">@conversation.UserName</span>
+                            <span class="timestamp">@GetRelativeTime(conversation.LastTimestamp)</span>
+                        </div>
+                        <div class="bottom-row">
+                            <span class="preview">@conversation.LastMessagePreview</span>
+                            @if (conversation.UnreadCount > 0)
+                            {
+                                <span class="unread-badge">@conversation.UnreadCount</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No conversations</p>
+            </div>
+        }
+    </div>
+</div>

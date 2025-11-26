@@ -1,0 +1,13 @@
+@inherits UiComponentBase
+@using Pharmatrack.Client.Models
+
+<div class="notification-item" @onclick="HandleClick">
+    <img src="@Notification.AvatarUrl" alt="@Notification.FromUserName" class="avatar" />
+    <div class="content">
+        <div class="header">
+            <span class="name">@Notification.FromUserName</span>
+        </div>
+        <div class="preview">@Notification.MessagePreview</div>
+    </div>
+    <div class="timestamp">@GetRelativeTime(Notification.Timestamp)</div>
+</div>

@@ -1,0 +1,17 @@
+@page "/messages"
+@inherits UiComponentBase
+@using Pharmatrack.Client.Models
+@using Microsoft.AspNetCore.WebUtilities
+@using Pharmatrack.Client.Services
+
+<div class="messages-page">
+    <ConversationsList 
+        Conversations="@conversations"
+        SelectedUserId="@selectedUserId"
+        OnSelect="@HandleConversationSelect" />
+
+    <ChatWindow 
+        SelectedUserId="@selectedUserId"
+        MessageIdToHighlight="@messageIdToHighlight"
+        OnMessageSent="@HandleMessageSent"  />
+</div>

@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+@using Pharmatrack.Client.Services
+@using Pharmatrack.Client.SharedComponents
+@inject DxThemesService ThemesService
+<div class="app-container">
+    <Header />
+    
+    <div class="app-body">
+        <div class="sidebar @(AppState.IsSidebarCollapsed ? "sidebar-collapsed" : "sidebar-expanded")">
+            <NavMenu />
+        </div>
+        
+        <main class="main-content">
+            @Body
+        </main>
+    </div>
+    
+    <Footer />
+</div>

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		 
+		<TrimMode>partial</TrimMode>
+		<BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+		<UseWebAssembly>true</UseWebAssembly>
+
+		<!-- IMPORTANT: Always regenerate runtime -->
+		<WasmGenerateRunTime>true</WasmGenerateRunTime>
+		<SkipExtraFilesOnServer>false</SkipExtraFilesOnServer>
+		<RunAOTCompilation>false</RunAOTCompilation>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DevExpress.Blazor" Version="25.1.6" />
+		<PackageReference Include="DevExpress.Data" Version="25.1.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.11" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.11" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<TrimmableAssembly Include="DevExpress.Data.v25.1" />
+		<TrimmerRootDescriptor Include="MyRoots.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharmatrack.Client.ServerConnector\Pharmatrack.Client.ServerConnector.csproj" />
+		<ProjectReference Include="..\Pharmatrack.ViewModels\Pharmatrack.ViewModels.csproj" />
+	</ItemGroup>
+
+</Project>

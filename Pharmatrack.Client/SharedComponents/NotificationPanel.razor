@@ -1,0 +1,60 @@
+@inherits UiComponentBase
+@using Pharmatrack.Client.Models
+
+@if (IsOpen)
+{
+    <div class="backdrop" @onclick="Close"></div>
+    
+    <div class="panel" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-labelledby="notification-title"
+         @ref="panelElement">
+        <div class="header">
+            <h2 id="notification-title" class="title">Notifications</h2>
+            <button @onclick="Close" 
+                    class="close-btn" 
+                    aria-label="Close"
+                    type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     fill="none" 
+                     viewBox="0 0 24 24" 
+                     stroke-width="2" 
+                     stroke="currentColor" 
+                     class="icon">
+                    <path stroke-linecap="round" 
+                          stroke-linejoin="round" 
+                          d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="notifications-list" role="list">
+            @if (Notifications != null && Notifications.Any())
+            {
+                @foreach (var notification in Notifications)
+                {
+                    <div role="listitem">
+                        <NotificationItem 
+                            Notification="@notification"
+                            OnNavigate="@Close" />
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p>No notifications</p>
+                </div>
+            }
+        </div>
+
+        <div class="footer">
+            <button @onclick="ViewAllNotifications" 
+                    class="view-all-btn"
+                    type="button">
+                View All Notifications
+            </button>
+        </div>
+    </div>
+}

@@ -1,0 +1,27 @@
+@inherits UiComponentBase
+
+<header class="app-header">
+    <div class="header-container">
+        <!-- Left section: Navigation toggle -->
+        <div class="header-left">
+            <NavToggle />
+        </div>
+
+        <!-- Center section: Search placeholder -->
+        <div class="header-center">
+            <div class="search-placeholder">
+                <!-- Optional: Add search component here later -->
+            </div>
+        </div>
+
+        <!-- Right section: Notifications and User menu -->
+        <div class="header-right">
+            <NotificationButton />
+            <UserMenu UserName="Soheil" 
+                      AvatarUrl="images/user-avatar.svg"
+                      OnEditProfile="@HandleEditProfile"
+                      OnAccountSettings="@HandleAccountSettings"
+                      OnSignOut="@HandleSignOut" />
+        </div>
+    </div>
+</header>

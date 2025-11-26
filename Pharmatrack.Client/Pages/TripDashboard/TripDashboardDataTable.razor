@@ -1,0 +1,82 @@
+@inherits UiComponentBase
+@using DevExpress.Blazor
+@using Pharmatrack.Client.SharedComponents
+@using Pharmatrack.ViewModels.Trip
+
+<div class="pivot-container" id="trips-grid-wrapper">
+    <DxGrid Data="@Trips"
+            PageSize="@PageSize"
+            @bind-PageIndex="@PageIndex"
+            PageSizeChanged="OnPageSizeChanged"
+            PagerPosition="GridPagerPosition.TopAndBottom"
+            PageSizeSelectorVisible="true"
+            PageSizeSelectorItems="@(new int[] { 10, 15, 30 })"
+            PageSizeSelectorAllRowsItemVisible="false"
+            ColumnResizeMode="GridColumnResizeMode.NextColumn"
+            TextWrapEnabled="false"
+            CssClass="@Class">
+
+        <Columns>
+            <DxGridDataColumn Caption="Status" MinWidth="100" FieldName="@nameof(TripResponseViewModel.Status)">
+                <CellDisplayTemplate>
+                    @{
+                        var employeeTask = (TripResponseViewModel)context.DataItem;
+                        var displayText = employeeTask.Status;
+                        var badgeClass = employeeTask.Status switch
+                        {
+                            TripStatus.Dispatched => "bg-success",
+                            TripStatus.Pending => "bg-info",
+                            TripStatus.InProgress => "bg-warning",
+                            TripStatus.Completed => "bg-secondary",
+                            _ => "bg-danger"
+                        };
+                    }
+                    <span class="badge @badgeClass py-1 px-2" title="@displayText  priority">@context.HighlightedDisplayText</span>
+                </CellDisplayTemplate>
+            </DxGridDataColumn>
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.ServiceType)"
+                              Caption="Service Types" />
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.TripNumber)"
+                              Caption="Trip Number" />
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Description)"
+                              Caption="Description" />
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.DispatchTime)"
+                              Caption="Dispatch Time" />
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Dispatcher)"
+                              Caption="Dispatcher" />
+
+            <DxGridDataColumn FieldName="@nameof(TripResponseViewModel.Driver)"
+                              Caption="Driver" />
+
+            <DxGridDataColumn Caption="Map">
+                <CellDisplayTemplate>
+                    <DxButton RenderStyle="ButtonRenderStyle.Secondary"
+                              Click="@(()=>ShowMap((TripResponseViewModel)context.DataItem))"
+                              Text="Show Trip Route" />
+                </CellDisplayTemplate>
+            </DxGridDataColumn>
+        </Columns>
+    </DxGrid>
+
+    <!-- Loading overlay -->
+    <DxLoadingPanel Visible="@IsLoading"
+                    PositionTarget="#trips-grid-wrapper"
+                    ApplyBackgroundShading="true"
+                    IsContentBlocked="true"
+                    Text="Data loading..."
+                    IndicatorAnimationType="@WaitIndicatorAnimationType.Spin" />
+
+    <TripMapPopup IsVisible="@IsMapPopupVisible" GoogleMapsApiKey="AIzaSyDwMaKPrh5qVNMOJ9_wIpIKOeVpuzEWc4w" IsVisibleChanged="@OnMapVisibleChanged" Stops="@MapStops" />
+</div>
+
+@* 
+          <CellDisplayTemplate Context="context">
+                    <DxButton RenderStyle="ButtonRenderStyle.Secondary"
+                              Click="@(()=>ShowMap((TripViewModel)context.DataItem))"
+                              Text="Show map" />
+                </CellDisplayTemplate> *@
